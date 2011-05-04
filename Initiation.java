@@ -3,6 +3,7 @@ import java.io.*;
 
 public class Initiation {
   Interface io;
+  RogueInterface rio;
   MT rand;
   SaveFile s;
   
@@ -19,6 +20,7 @@ public class Initiation {
   }
   Initiation() {
     io=new Interface();
+    rio=new RogueInterface();
     rand=new MT();
     run();
   }
@@ -154,6 +156,8 @@ public class Initiation {
         } else {
           io.out("Please use the form: rename [person] [newname]");
         }
+      } else if(command[0].equals("explore")) {
+        rio.setVisible(true);
       } else {
         io.out("Unknown command, type \'help\' for commands.");
       }
@@ -240,6 +244,7 @@ public class Initiation {
   public void help(String[] command) {
     if(command.length==1) {
       io.out("Commands:");
+      io.out("explore");
       io.out("settask [person] [task]");
       io.out("play");
       io.out("resources");
