@@ -62,7 +62,6 @@ public class Initiation {
       for(int i=0;i<s.village.getPop();i++) {
         io.appendData("-"+s.village.getPerson(i).name);
       }
-      
       //End Set Data_Field
       
       String c=io.nextLine();
