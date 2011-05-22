@@ -40,7 +40,11 @@ public class World implements Serializable {
     for(int i=0;i<100;i++) {
       for(int j=0;j<100;j++) {
         if(height.perlin_noise((village_x+(i/100.0))*0.01,(j/100.0)*0.01)>=0) {
-          village.setPoint(i,j,'.');
+          if(mt.random()%2==0) {
+            village.setPoint(i,j,'.');
+          } else {
+            village.setPoint(i,j,',');
+          }
         } else {
           village.setPoint(i,j,'~');
         }

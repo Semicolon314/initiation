@@ -20,7 +20,7 @@ public class Initiation {
   }
   Initiation() {
     io=new Interface();
-    rio=new RogueInterface();
+    rio=new RogueInterface(this);
     rand=new MT();
     run();
   }
@@ -159,13 +159,6 @@ public class Initiation {
         rio.setVisible(true);
       } else {
         io.out("Unknown command, type \'help\' for commands.");
-      }
-      
-      //Rogue Code
-      if(rio.isVisible()) { //Roguelike is active?
-        //display hardcoded position of map
-        rio.img.drawImage(0,0,s.world.village);
-        rio.update();
       }
     }
     save("save.dat");
