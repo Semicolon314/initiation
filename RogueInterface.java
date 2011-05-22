@@ -64,28 +64,37 @@ public class RogueInterface extends JFrame implements ActionListener, KeyListene
     if(this.isVisible()) { //Roguelike is active?
       //handle key
       int key=e.getKeyCode();
-      if(key==37) //LEFT
-        player_x=(player_x+99)%100;
-      if(key==38) //UP
-        player_y=(player_y+99)%100;
-      if(key==39) //RIGHT
-        player_x=(player_x+1)%100;
-      if(key==40) //DOWN
-        player_y=(player_y+1)%100;
+      if(key==37) { //LEFT
+        player_x--;
+        if(player_x<0) player_x=0;
+      }
+      if(key==38) { //UP
+        player_y--;
+        if(player_y<0) player_y=0;
+      }
+      if(key==39) { //RIGHT
+        player_x++;
+        if(player_x>99) player_x=99;
+      }
+      if(key==40) { //DOWN
+        player_y++;
+        if(player_y>99) player_y=99;
+      }
       
       //display the map and player
       int disp_map_x=player_x-(WIDTH/2);
       int disp_map_y=player_y-(HEIGHT/2);
       int disp_player_x=(WIDTH/2);
       int disp_player_y=(HEIGHT/2);
-      if(disp_map_x<(WIDTH/2)-100) {
+      /*if(disp_map_x<(WIDTH/2)-100) {
         disp_player_x-=((WIDTH/2)-100)-disp_map_x;
         disp_map_x=(WIDTH/2)-100;
       }
       if(disp_map_y<0) {
         disp_map_y-=disp_map_y;
         disp_map_y=0;
-      }
+      }*/
+      img.clear();
       img.drawImage(disp_map_x,disp_map_y,root.s.world.village);
       img.drawString(disp_player_x,disp_player_y,"@");
       update();

@@ -36,4 +36,11 @@ public class TextImage implements Serializable {
       }
     }
   }
+  public void clear() {
+    for(int i=0;i<getWidth();i++) {
+      for(int j=0;j<getHeight();j++) {
+        setPoint(i,j,' ');
+      }
+    }
+  }
 }
