@@ -1,4 +1,6 @@
-public class TextImage {
+import java.io.*;
+
+public class TextImage implements Serializable {
   private char[][] image;
   TextImage(int width,int height) {
     image=new char[width][height];

@@ -1,16 +1,20 @@
 import java.io.*;
 
 public class World implements Serializable {
-  MT mt;
+  transient MT mt;
   public PerlinNoise height;
   public PerlinNoise temp;
   public PerlinNoise wet;
+  public TextImage village;
+  transient Initiation root;
   int village_x;
   int village_y;
   public static void main(String[] args) {
-    new World();
+    //new World();
   }
-  World() {
+  World(Initiation root) {
+    this.root=root;
+    
     mt=new MT();
     height=new PerlinNoise(10,.4,mt.random());
     temp=new PerlinNoise(10,.4,mt.random());
@@ -32,15 +36,41 @@ public class World implements Serializable {
         break;
       }
     }
+    village=new TextImage(100,100);
     for(int i=0;i<100;i++) {
       for(int j=0;j<100;j++) {
         if(height.perlin_noise((village_x+(i/100.0))*0.01,(j/100.0)*0.01)>=0) {
-          System.out.print("#");
+          village.setPoint(i,j,'.');
         } else {
-          System.out.print("~");
+          village.setPoint(i,j,'~');
         }
       }
-      System.out.println();
     }
   }
+  public void load(Initiation root) {
+    this.root=root;
+    mt=new MT();
+  }
+  /*
+   * Broken code, does not work (or probably doesn't)
+  boolean isLake(int x,int y,double scale,double max) {
+    double cur=height.perlin_noise(x*scale,y*scale);
+    if(max==0.0)
+      max=cur;
+    if(cur>0.0) {
+      boolean r=true;
+      if(height.perlin_noise(x*scale-scale,y*scale)<cur)
+        r=r&&isLake(x-1,y,scale,max);
+      if(height.perlin_noise(x*scale+scale,y*scale)<cur)
+        r=r&&isLake(x+1,y,scale,max);
+      if(height.perlin_noise(x*scale,y*scale-scale)<cur)
+        r=r&&isLake(x,y-1,scale,max);
+      if(height.perlin_noise(x*scale,y*scale+scale)<cur)
+        r=r&&isLake(x,y+1,scale,max);
+      return r;
+    } else {
+      return false;
+    }
+  }
+  */
 }

@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class PerlinNoise {
+public class PerlinNoise implements Serializable {
   public int octaves;
   public double persistance;
   public int[][] primes;

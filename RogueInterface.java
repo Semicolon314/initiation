@@ -13,7 +13,7 @@ public class RogueInterface extends JFrame implements ActionListener {
   public RogueInterface() {   
     //JFrame
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.setTitle("Initiation");
+    this.setTitle("Initiation - Explore");
     this.setLayout(new FlowLayout());
     
     //TextImage

@@ -160,6 +160,13 @@ public class Initiation {
       } else {
         io.out("Unknown command, type \'help\' for commands.");
       }
+      
+      //Rogue Code
+      if(rio.isVisible()) { //Roguelike is active?
+        //display hardcoded position of map
+        rio.img.drawImage(0,0,s.world.village);
+        rio.update();
+      }
     }
     save("save.dat");
     io.close();
@@ -174,11 +181,12 @@ public class Initiation {
       s = (SaveFile)in.readObject();
       in.close();
       
-      //call load functions of loaded classes (because root isn't stored)
+      //call load functions of loaded classes (because root isn't stored) NOTE: move the person loading into village
       for(int i=0;i<s.village.getPop();i++) {
         s.village.getPerson(i).load(this);
       }
       s.village.load(this);
+      s.world.load(this);
       
       return true;
     } catch(IOException ex) {

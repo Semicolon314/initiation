@@ -2,6 +2,7 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import javax.jnlp.*;
 
 public class Interface extends JFrame implements ActionListener {
   String next;
