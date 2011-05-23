@@ -6,7 +6,7 @@ import java.awt.*;
 public class RogueInterface extends JFrame implements ActionListener, KeyListener {
   public TextImage img;
   public static int WIDTH=50;
-  public static int HEIGHT=50;
+  public static int HEIGHT=20;
   public int player_x;
   public int player_y;
   public int next_key;
@@ -27,20 +27,26 @@ public class RogueInterface extends JFrame implements ActionListener, KeyListene
     
     //Elements
     JPanel panel1=new JPanel();
-    panel1.setLayout(new GridLayout(HEIGHT,WIDTH,5,0));
-    labels=new JLabel[WIDTH*HEIGHT];
-    for(int i=0;i<WIDTH*HEIGHT;i++) {
-      labels[i]=new JLabel("#");
+    panel1.setLayout(new GridLayout(HEIGHT,1,0,0));
+    labels=new JLabel[HEIGHT];
+    String fillerrow="";
+    for(int i=0;i<WIDTH;i++) {
+      fillerrow+="#";
+    }
+    for(int i=0;i<HEIGHT;i++) {
+      labels[i]=new JLabel(fillerrow);
+      labels[i].setFont(new Font(Font.MONOSPACED,Font.PLAIN,12));
       panel1.add(labels[i]);
     }
     this.add(panel1);
     this.addKeyListener(this);
     
-    update();
-    
     //Pack and Set Visible
     this.pack();
     this.setVisible(false);
+    
+    //Update after pack so that the frame is the right size
+    update();
     
     //Player x and y
     player_x=WIDTH/2;
@@ -48,8 +54,12 @@ public class RogueInterface extends JFrame implements ActionListener, KeyListene
   }
   
   public void update() {
-    for(int i=0;i<WIDTH*HEIGHT;i++) {
-      labels[i].setText(""+img.getPoint(i%WIDTH,(i-i%WIDTH)/WIDTH));
+    for(int i=0;i<HEIGHT;i++) {
+      String t="";
+      for(int j=0;j<WIDTH;j++) {
+        t+=img.getPoint(j,i);
+      }
+      labels[i].setText(t);
     }
   }
   
@@ -82,18 +92,26 @@ public class RogueInterface extends JFrame implements ActionListener, KeyListene
       }
       
       //display the map and player
-      int disp_map_x=player_x-(WIDTH/2);
-      int disp_map_y=player_y-(HEIGHT/2);
+      int disp_map_x=(WIDTH/2)-player_x;
+      int disp_map_y=(HEIGHT/2)-player_y;
       int disp_player_x=(WIDTH/2);
       int disp_player_y=(HEIGHT/2);
-      /*if(disp_map_x<(WIDTH/2)-100) {
-        disp_player_x-=((WIDTH/2)-100)-disp_map_x;
-        disp_map_x=(WIDTH/2)-100;
+      if(disp_map_x>0) {    
+        disp_player_x-=disp_map_x;
+        disp_map_x=0;
       }
-      if(disp_map_y<0) {
-        disp_map_y-=disp_map_y;
+      if(disp_map_y>0) {
+        disp_player_y-=disp_map_y;
         disp_map_y=0;
-      }*/
+      }
+      if(disp_map_x<WIDTH-100) {
+        disp_player_x+=(WIDTH-100)-disp_map_x;
+        disp_map_x=WIDTH-100;
+      }
+      if(disp_map_y<HEIGHT-100) {
+        disp_player_y+=(HEIGHT-100)-disp_map_y;
+        disp_map_y=HEIGHT-100;
+      }
       img.clear();
       img.drawImage(disp_map_x,disp_map_y,root.s.world.village);
       img.drawString(disp_player_x,disp_player_y,"@");
