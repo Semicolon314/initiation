@@ -6,6 +6,9 @@ public class World implements Serializable {
   public PerlinNoise temp;
   public PerlinNoise wet;
   public TextImage village;
+  public TextImage[][] buffer;
+  public int buffer_x;
+  public int buffer_y;
   transient Initiation root;
   int village_x;
   int village_y;
@@ -36,24 +39,63 @@ public class World implements Serializable {
         break;
       }
     }
-    village=new TextImage(100,100);
-    for(int i=0;i<100;i++) {
-      for(int j=0;j<100;j++) {
-        if(height.perlin_noise((village_x+(i/100.0))*0.01,(j/100.0)*0.01)>=0) {
-          if(mt.random()%2==0) {
-            village.setPoint(i,j,'.');
-          } else {
-            village.setPoint(i,j,',');
-          }
-        } else {
-          village.setPoint(i,j,'~');
-        }
-      }
-    }
+    village=getChunkImage(village_x,village_y);
   }
   public void load(Initiation root) {
     this.root=root;
     mt=new MT();
+  }
+  public TextImage getChunkImage(int x,int y) {
+    TextImage chunk=new TextImage(100,100);
+    for(int i=0;i<100;i++) {
+      for(int j=0;j<100;j++) {
+        if(height.perlin_noise((x+(i/100.0))*0.01,(y+(j/100.0))*0.01)>=0) {
+          chunk.setPoint(i,j,'.');
+        } else {
+          chunk.setPoint(i,j,'~');
+        }
+      }
+    }
+    return chunk;
+  }
+  public void updateBuffer(int x,int y) {
+    TextImage[][] newbuffer=new TextImage[3][3];
+    if(!(buffer_x==x&&buffer_y==y)) {
+      for(int i=-1;i<2;i++) {
+        for(int j=-1;j<2;j++) {
+          if(getBufferImage(x+i,y+j)!=null) {
+            newbuffer[i+1][j+1]=getBufferImage(x+i,y+j);
+          } else {
+            newbuffer[i+1][j+1]=getChunkImage(x+i,y+j);
+          }
+        }
+      }
+      buffer_x=x;
+      buffer_y=y;
+      buffer=newbuffer;
+    }
+  }
+  public TextImage getBufferImage(int x,int y) {
+    /*if(Math.abs(x-buffer_x)>1||Math.abs(y-buffer_y)>1) {
+      if(buffer_x<x&&Math.abs(x-buffer_x)>1) {
+        buffer_x=x-1;
+      } else if(buffer_x>x&&Math.abs(x-buffer_x)>1) {
+        buffer_x=x+1;
+      }
+      if(buffer_y<y&&Math.abs(y-buffer_y)>1) {
+        buffer_y=y-1;
+      } else if(buffer_y>y&&Math.abs(y-buffer_y)>1) {
+        buffer_y=y+1;
+      }
+      updateBuffer(buffer_x,buffer_y);
+      return getBufferImage(x,y);
+    } else {*/
+    if(Math.abs(x-buffer_x)>1||Math.abs(y-buffer_y)>1) {
+      return null;
+    } else {
+      return buffer[x-buffer_x+1][y-buffer_y+1];
+    }
+    //}
   }
   /*
    * Broken code, does not work (or probably doesn't)

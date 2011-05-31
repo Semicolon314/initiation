@@ -157,6 +157,7 @@ public class Initiation {
         }
       } else if(command[0].equals("explore")) {
         rio.setVisible(true);
+        rio.update();
       } else {
         io.out("Unknown command, type \'help\' for commands.");
       }
